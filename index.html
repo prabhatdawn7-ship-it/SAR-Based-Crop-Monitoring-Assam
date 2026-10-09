@@ -1,0 +1,1034 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Assam SAR CropWatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed video opener, then a single 1120px column of chapters; one slide carousel for the season, one chart lab. Colors come straight from the app's backscatter ramp. */
+:root{
+  --bg:#0b1230;          /* deep radar navy (app ramp low end, darkened) */
+  --bg-2:#111a42;
+  --panel:#16204f;
+  --line:rgba(244,230,161,.16);
+  --fg:#eef0f6;
+  --muted:#a7afcb;
+  --ramp-1:#101b4d; --ramp-2:#3188bd; --ramp-3:#f4e6a1; --ramp-4:#d34c32;
+  --accent:#f4e6a1;      /* sand: moderately high backscatter */
+  --hot:#e2694f;
+  --leaf:#7fbf6a;
+  --f-display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step--1:clamp(.8rem,.78rem + .1vw,.86rem);
+  --step-0:clamp(1rem,.97rem + .15vw,1.08rem);
+  --step-1:clamp(1.25rem,1.1rem + .6vw,1.6rem);
+  --step-2:clamp(1.7rem,1.3rem + 1.6vw,2.6rem);
+  --step-3:clamp(2.6rem,1.6rem + 4.6vw,5.6rem);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--step-0);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:var(--step-2)}
+h3{font-size:var(--step-1);font-weight:500}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+section.chapter{padding-block:clamp(56px,9vw,112px);border-top:1px solid var(--line)}
+.lede{color:var(--muted);max-width:62ch;font-size:var(--step-0)}
+.head{display:grid;gap:14px;margin-bottom:clamp(28px,4vw,48px)}
+
+/* ---------- top bar ---------- */
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);transition:background .3s}
+.bar.solid{background:rgba(11,18,48,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{font-family:var(--f-display);font-style:italic;font-weight:700;font-size:1.15rem;color:var(--fg);text-decoration:none;white-space:nowrap}
+.nav{display:flex;gap:20px;font-size:var(--step--1);font-weight:500}
+.nav a{color:var(--muted);text-decoration:none}
+.nav a:hover{color:var(--fg)}
+@media (max-width:760px){.nav{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:min(92vh,820px);display:grid;align-items:end;overflow:hidden;isolation:isolate}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(11,18,48,.35) 0%,rgba(11,18,48,.15) 35%,rgba(11,18,48,.85) 78%,var(--bg) 100%)}
+.scan{position:absolute;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:screen;opacity:.5;
+  background:linear-gradient(90deg,transparent 0,rgba(49,136,189,.0) 40%,rgba(49,136,189,.45) 49.5%,rgba(244,230,161,.55) 50%,transparent 50.5%);
+  background-size:220% 100%;animation:sweep 7s linear infinite}
+@keyframes sweep{from{background-position:120% 0}to{background-position:-20% 0}}
+.hero-inner{padding-block:120px 56px;display:grid;gap:22px}
+.hero h1{font-size:var(--step-3);letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--accent);font-weight:500}
+.hero .sub{max-width:56ch;font-size:var(--step-1);font-weight:400;color:#dfe3f1;line-height:1.45;font-family:var(--f-body)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem;border:1px solid transparent;cursor:pointer;font-family:var(--f-body)}
+.btn.primary{background:var(--accent);color:#141a3a}
+.btn.primary:hover{background:#fff4c4}
+.btn.ghost{border-color:rgba(238,240,246,.45);color:var(--fg);background:rgba(11,18,48,.35)}
+.btn.ghost:hover{border-color:var(--fg)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:18px}
+.facts div{background:rgba(11,18,48,.72);padding:14px 16px;display:grid;gap:2px;backdrop-filter:blur(6px)}
+.facts b{font-family:var(--f-mono);font-weight:500;font-size:1.02rem;color:var(--fg)}
+.facts span{font-size:var(--step--1);color:var(--muted)}
+@media (max-width:760px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.loadin>*{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.loadin>*:nth-child(2){animation-delay:.12s}.loadin>*:nth-child(3){animation-delay:.24s}
+.loadin>*:nth-child(4){animation-delay:.36s}.loadin>*:nth-child(5){animation-delay:.48s}
+@keyframes rise{from{transform:translateY(26px);opacity:.001}to{transform:none;opacity:1}}
+
+/* scroll-driven slide-ins (resting state is fully visible) */
+@supports (animation-timeline: view()){
+  .slide-l{animation:fromL linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  .slide-r{animation:fromR linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  .slide-u{animation:fromU linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+}
+@keyframes fromL{from{transform:translateX(-60px);opacity:.15}to{transform:none;opacity:1}}
+@keyframes fromR{from{transform:translateX(60px);opacity:.15}to{transform:none;opacity:1}}
+@keyframes fromU{from{transform:translateY(50px);opacity:.15}to{transform:none;opacity:1}}
+
+/* ---------- objectives ---------- */
+.obj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.obj article{padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--bg-2);display:grid;gap:10px;align-content:start}
+.obj .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--panel);color:var(--accent)}
+.obj p{color:var(--muted)}
+@media (max-width:760px){.obj{grid-template-columns:1fr}}
+
+/* ---------- study area ---------- */
+.area{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
+.area figure{margin:0;position:relative}
+.area img{display:block;width:100%;border-radius:18px;aspect-ratio:16/10;object-fit:cover}
+.area figcaption{font-size:var(--step--1);color:var(--muted);margin-top:10px;font-family:var(--f-mono)}
+.area .txt{display:grid;gap:16px;min-width:0}
+.area .txt p{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:.78rem;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg)}
+@media (max-width:860px){.area{grid-template-columns:1fr}}
+
+/* ---------- method ---------- */
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;counter-reset:s}
+.flow li{counter-increment:s;padding:20px 18px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:grid;gap:8px;align-content:start;min-width:0}
+.flow li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);color:var(--ramp-2);font-size:.85rem}
+.flow b{font-weight:600}
+.flow span{color:var(--muted);font-size:.92rem}
+@media (max-width:980px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.flow{grid-template-columns:1fr}}
+.spec{margin-top:28px;overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+.spec table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:520px}
+.spec th,.spec td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.spec tr:last-child td,.spec tr:last-child th{border-bottom:0}
+.spec th{font-weight:500;color:var(--muted);width:32%}
+.spec td{font-family:var(--f-mono);font-size:.86rem}
+
+/* ---------- season carousel ---------- */
+.carousel{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--bg-2)}
+.track{display:flex;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+.slide{flex:0 0 100%;min-width:0;display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(20px,3vw,40px);padding:clamp(22px,4vw,44px)}
+.slide .m{font-family:var(--f-display);font-size:clamp(2.6rem,2rem + 3vw,4.4rem);font-style:italic;line-height:1;color:var(--accent)}
+.slide .dates{font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
+.slide .body{display:grid;gap:14px;align-content:start;min-width:0}
+.slide .body p{color:#d3d8ea}
+.slide .look{display:grid;gap:8px;font-size:.92rem}
+.slide .look div{display:flex;gap:10px;align-items:baseline}
+.slide .look i{flex:0 0 12px;height:12px;border-radius:3px;transform:translateY(1px)}
+.slide.active .body>*{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .body>*:nth-child(2){animation-delay:.1s}.slide.active .body>*:nth-child(3){animation-delay:.2s}.slide.active .body>*:nth-child(4){animation-delay:.3s}
+.phase{display:grid;gap:12px;align-content:center;min-width:0}
+.phase canvas{width:100%;height:auto;display:block;border-radius:14px}
+.phase small{color:var(--muted);font-size:.78rem}
+@media (max-width:820px){.slide{grid-template-columns:1fr}}
+.ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(16px,3vw,28px);border-top:1px solid var(--line)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button{font-family:var(--f-mono);font-size:.8rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:#141a3a;border-color:var(--accent)}
+.arrows{display:flex;gap:8px}
+.arrows button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;font-size:1.1rem}
+.arrows button:hover{border-color:var(--accent)}
+.progress{height:3px;background:var(--line)}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ramp-2),var(--accent),var(--ramp-4))}
+
+/* ---------- chart lab ---------- */
+.lab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px}
+@media (max-width:900px){.lab{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:18px;background:var(--bg-2);padding:clamp(18px,3vw,26px);display:grid;gap:16px;min-width:0}
+.toolbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font-family:var(--f-mono);font-size:.82rem;padding:7px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ramp-2);color:#fff}
+.chartbox{position:relative;height:340px}
+.note{font-size:.8rem;color:var(--muted);border-left:2px solid var(--hot);padding-left:12px}
+.ramp{height:16px;border-radius:999px;background:linear-gradient(90deg,var(--ramp-1),var(--ramp-2),var(--ramp-3),var(--ramp-4));border:1px solid var(--line)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.75rem;color:var(--muted);margin-top:6px}
+.bins{display:grid;gap:10px}
+.bins button{display:grid;grid-template-columns:16px 1fr auto;gap:12px;align-items:center;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;font-family:var(--f-body);font-size:.92rem}
+.bins button[aria-pressed="true"]{background:var(--panel);border-color:var(--accent)}
+.bins i{width:16px;height:16px;border-radius:4px}
+.bins code{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.binread{min-height:6.5em;color:#d3d8ea;font-size:.95rem}
+
+/* ---------- interpretation ---------- */
+.interp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.interp article{display:grid;gap:10px;padding:22px;border-radius:16px;border:1px solid var(--line);align-content:start}
+.interp p{color:var(--muted)}
+.interp .tag{font-family:var(--f-mono);font-size:.75rem;color:var(--accent)}
+@media (max-width:900px){.interp{grid-template-columns:1fr}}
+
+/* ---------- how to + limits ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,48px)}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:14px;counter-reset:h}
+.steps li{counter-increment:h;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+.steps li::before{content:counter(h);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--accent);color:var(--accent);font-family:var(--f-mono);font-size:.85rem}
+.steps p{color:var(--muted)}
+.limits{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.limits li{padding:14px 16px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line);color:var(--muted);font-size:.95rem}
+.limits b{color:var(--fg);font-weight:600}
+
+/* ---------- closing ---------- */
+.closing{position:relative;overflow:hidden;border-radius:24px;isolation:isolate;padding:clamp(32px,6vw,72px);display:grid;gap:18px;justify-items:start}
+.closing img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.closing::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(11,18,48,.94) 0%,rgba(11,18,48,.7) 55%,rgba(11,18,48,.25) 100%)}
+.closing h2{max-width:18ch}
+.closing p{max-width:52ch;color:#d9ddeb}
+footer{padding-block:36px 48px;color:var(--muted);font-size:.85rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.mute-btn{position:absolute;right:clamp(16px,4vw,40px);bottom:24px;z-index:2}
+
+/* ---------- orbit zoom ---------- */
+.orbit{position:relative;width:100%;aspect-ratio:16/9;max-height:680px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#050a1f}
+@media (max-width:640px){.orbit{aspect-ratio:4/5}}
+.orbit canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;display:flex;gap:14px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted);pointer-events:none}
+.hud.tl{top:16px;left:18px}.hud.tr{top:12px;right:14px;pointer-events:auto}
+.hud.bl{bottom:14px;left:18px}.hud.br{bottom:14px;right:18px;color:var(--accent)}
+.orbit-cap{margin-top:10px;font-size:.8rem;color:var(--muted);font-family:var(--f-mono)}
+
+/* ---------- GEE map viewer ---------- */
+.mapview{border:1px solid var(--line);border-radius:22px;background:var(--bg-2);overflow:hidden}
+.mapbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:14px clamp(14px,3vw,22px);border-bottom:1px solid var(--line)}
+.btn.small{padding:9px 16px;font-size:.88rem}
+.mapstage{overflow:hidden}
+.maptrack{display:flex;transition:transform .8s cubic-bezier(.65,0,.25,1)}
+.mapfig{flex:0 0 100%;min-width:0;margin:0;padding:clamp(12px,2.5vw,22px);display:grid;gap:10px}
+.mapfig .zoom{all:unset;cursor:zoom-in;display:block;border-radius:14px;overflow:hidden;position:relative}
+.mapfig .zoom:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.mapfig img{display:block;width:100%;max-height:640px;object-fit:contain;background:#05091c;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.mapfig .zoom:hover img{transform:scale(1.03)}
+.mapfig figcaption{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);display:flex;gap:8px;align-items:center}
+.sw{flex:0 0 14px;height:14px;border-radius:3px;border:1px solid rgba(255,255,255,.25);display:inline-block}
+.layers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.layers div{background:var(--bg-2);padding:12px 16px;display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--muted);min-width:0}
+.layers .sw{margin-top:3px}
+.layers b{color:var(--fg);font-weight:600;display:block}
+@media (max-width:860px){.layers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,9,28,.92);display:grid;place-items:center;padding:clamp(16px,4vw,48px);gap:12px;align-content:center}
+.lightbox img{max-width:100%;max-height:80vh;border-radius:12px;animation:pop .45s cubic-bezier(.2,.7,.2,1)}
+.lightbox p{color:var(--muted);font-family:var(--f-mono);font-size:.82rem;text-align:center}
+.lightbox button{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:1.2rem;cursor:pointer}
+@keyframes pop{from{transform:scale(.92);opacity:.2}to{transform:none;opacity:1}}
+
+/* ---------- script walkthrough ---------- */
+.code{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--bg-2)}
+.codenav{display:grid;align-content:start;border-right:1px solid var(--line);max-height:560px;overflow-y:auto}
+.codenav button{all:unset;cursor:pointer;display:grid;grid-template-columns:30px 1fr;gap:8px;padding:11px 16px;font-size:.9rem;color:var(--muted);border-bottom:1px solid var(--line)}
+.codenav button span:first-child{font-family:var(--f-mono);font-size:.78rem;color:var(--ramp-2)}
+.codenav button[aria-selected="true"]{background:var(--panel);color:var(--fg);box-shadow:inset 3px 0 0 var(--accent)}
+.codenav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.codepane{display:grid;align-content:start;gap:16px;padding:clamp(18px,3vw,28px);min-width:0}
+.codehead{display:grid;gap:8px}
+.codehead p{color:var(--muted);max-width:62ch}
+.codepane pre{margin:0;padding:18px;border-radius:12px;background:#070c24;border:1px solid var(--line);overflow-x:auto;font-family:var(--f-mono);font-size:.82rem;line-height:1.6;color:#d8dcf0}
+.codepane.swap .codehead,.codepane.swap pre{animation:fromR .5s cubic-bezier(.2,.7,.2,1) both}
+.tok-c{color:#7d86ad;font-style:italic}.tok-s{color:#f4e6a1}.tok-k{color:#e2694f}.tok-n{color:#7fbf6a}.tok-f{color:#7cc3ec}
+@media (max-width:820px){.code{grid-template-columns:1fr}.codenav{border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;max-height:none}.codenav button{flex:0 0 auto;border-bottom:0;border-right:1px solid var(--line);grid-template-columns:auto auto}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .hero video{display:none}
+}
+</style>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="brand" href="#top">SAR CropWatch</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#objectives">Objectives</a>
+      <a href="#area">Study area</a>
+      <a href="#gee-map">GEE map</a>
+      <a href="#method">Method</a>
+      <a href="#script">Script</a>
+      <a href="#season">Season</a>
+      <a href="#chart">Chart</a>
+      <a href="#interpret">Interpretation</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Introduction">
+    <img class="poster" src="poster.jpg" alt="">
+    <video id="heroVid" autoplay muted loop playsinline preload="auto" poster="poster.jpg" aria-hidden="true">
+      <source src="hero.mp4" type="video/mp4">
+    </video>
+    <div class="scan" aria-hidden="true"></div>
+    <div class="wrap hero-inner loadin">
+      <span class="eyebrow">Sentinel-1 C-band radar · Assam, India · Kharif 2025</span>
+      <h1>Assam SAR <em>CropWatch</em></h1>
+      <p class="sub">Reading the monsoon cropping season through clouds. A district-wise analysis of Sentinel-1 VV and VH backscatter across every district of Assam, June to October 2025.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://sodium-terrain-475105-q5.projects.earthengine.app/view/assam-sar-cropwatch" target="_blank" rel="noopener">Open the live Earth Engine app ↗</a>
+        <a class="btn ghost" href="#season">Walk through the season</a>
+      </div>
+      <div class="facts" role="list">
+        <div role="listitem"><b>S1 GRD · IW</b><span>Sensor and mode</span></div>
+        <div role="listitem"><b>VV + VH</b><span>Dual polarization</span></div>
+        <div role="listitem"><b>Jun–Oct 2025</b><span>Observation window</span></div>
+        <div role="listitem"><b>10 m</b><span>Nominal pixel spacing</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORBIT ZOOM -->
+  <section class="chapter orbit-sec" id="orbit-zoom">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">From orbit to Assam</span>
+        <h2>Sentinel-1 sees the whole Earth. This study looks at one state.</h2>
+      </div>
+      <div class="orbit" id="orbitBox">
+        <canvas id="orbit" role="img" aria-label="Animation: a rotating globe turns to north-east India and zooms in until the Assam state boundary fills the frame, then fades into the Earth Engine map of Assam"></canvas>
+        <div class="hud tl"><span class="eyebrow" id="hudStage">Earth</span></div>
+        <div class="hud bl"><span id="hudLat">26.33° N</span><span id="hudLon">92.99° E</span></div>
+        <div class="hud br"><span id="hudZoom">×1</span></div>
+        <div class="hud tr"><button type="button" class="btn ghost small" id="orbitReplay">↻ Replay</button></div>
+      </div>
+      <p class="orbit-cap">Boundaries: Natural Earth (countries and Assam state). Final frame: the app's HYBRID basemap with the Assam boundary asset.</p>
+    </div>
+  </section>
+
+  <!-- OBJECTIVES -->
+  <section class="chapter" id="objectives">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">Objectives</span>
+        <h2>Why radar, and why Assam</h2>
+        <p class="lede">Assam's main rice crop grows under monsoon cloud for months. Optical satellites often see nothing usable in that window. Synthetic Aperture Radar sees through cloud, day or night, which makes it the right sensor for tracking the kharif season here.</p>
+      </div>
+      <div class="obj">
+        <article class="slide-l">
+          <div class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+          <h3>Build a cloud-free monthly view</h3>
+          <p>Create median Sentinel-1 composites for each month from June to October 2025, plus a full-season composite, for all of Assam.</p>
+        </article>
+        <article class="slide-r">
+          <div class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg></div>
+          <h3>Explore by district</h3>
+          <p>Let anyone select a district, zoom to it and compare how its backscatter changes as the season moves from land preparation to maturity.</p>
+        </article>
+        <article class="slide-l">
+          <div class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18"/><path d="M5 16l4-5 4 3 6-8"/></svg></div>
+          <h3>Track the temporal signal</h3>
+          <p>Plot mean backscatter for every acquisition date so the crop calendar shows up as a curve: the flooding dip, the growth rise and the plateau.</p>
+        </article>
+        <article class="slide-r">
+          <div class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5"/></svg></div>
+          <h3>Lay the ground for classification</h3>
+          <p>Use VV and VH behaviour to understand which signals separate rice, tea, forest and water, as a first step toward a trained crop-type map.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDY AREA -->
+  <section class="chapter" id="area">
+    <div class="wrap area">
+      <figure class="slide-l">
+        <img src="tea-garden.jpg" alt="Rows of tea bushes under shade trees in soft morning light">
+        <figcaption>Tea estate with shade trees, a dense and stable canopy that stays bright in radar all season.</figcaption>
+      </figure>
+      <div class="txt slide-r">
+        <span class="eyebrow">Study area</span>
+        <h2>The whole state of Assam, district by district</h2>
+        <p>The study area is the entire state of Assam, from Dhubri on the Bangladesh border to Tinsukia in the far east, and south through the Barak Valley to Cachar. Every district polygon in the boundary asset is analysed, and each one can be selected on its own in the app.</p>
+        <p>Assam is a monsoon-fed landscape of floodplains, wetlands, forest and plantation. Rice dominates the cropped area, and the main <em>sali</em> (winter) rice is transplanted during the monsoon and harvested at the end of the year. Tea estates, riverine sandbars, wetlands (<em>beels</em>) and forest share the same valleys, and each scatters radar differently.</p>
+        <div class="chips">
+          <span class="chip">All Assam districts</span><span class="chip">Brahmaputra Valley</span><span class="chip">Barak Valley</span><span class="chip">Sali rice</span><span class="chip">Tea estates</span><span class="chip">Wetlands</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GEE MAP -->
+  <section class="chapter" id="gee-map">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">The Earth Engine map</span>
+        <h2>State view and district view</h2>
+        <p class="lede">These are screenshots of the app's map on the HYBRID basemap. Switch between the state boundary and the district boundaries, or tap a map to see it larger. The live app adds the backscatter layer on top.</p>
+      </div>
+      <div class="mapview slide-u">
+        <div class="mapbar">
+          <div class="seg" role="group" aria-label="Map view">
+            <button type="button" id="mvState" aria-pressed="true">State-wise</button>
+            <button type="button" id="mvDist" aria-pressed="false">District-wise</button>
+          </div>
+          <a class="btn ghost small" href="https://sodium-terrain-475105-q5.projects.earthengine.app/view/assam-sar-cropwatch" target="_blank" rel="noopener">Open live map ↗</a>
+        </div>
+        <div class="mapstage">
+          <div class="maptrack" id="maptrack">
+            <figure class="mapfig">
+              <button type="button" class="zoom" data-src="assam-state.jpg" data-cap="Assam state boundary (white) on the GEE HYBRID basemap" aria-label="Enlarge state-wise map">
+                <img src="assam-state.jpg" alt="Satellite basemap of north-east India with the Assam state boundary outlined in white, bordered by Bhutan, Arunachal Pradesh, Nagaland, Manipur, Meghalaya and Bangladesh">
+              </button>
+              <figcaption><i class="sw" style="background:#ffffff"></i>Layer “Assam boundary” · white, width 2 · zoom 7</figcaption>
+            </figure>
+            <figure class="mapfig">
+              <button type="button" class="zoom" data-src="assam-districts.jpg" data-cap="All district boundaries of Assam (yellow) on the GEE HYBRID basemap" aria-label="Enlarge district-wise map">
+                <img src="assam-districts.jpg" alt="The same view of Assam with every district boundary outlined in yellow, from Dhubri in the west to Tinsukia in the east and Cachar in the south">
+              </button>
+              <figcaption><i class="sw" style="background:#ffff00"></i>Layer “District boundaries” · yellow, width 1 · every district selectable</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="layers">
+          <div><i class="sw" style="background:#ffffff"></i><span><b>Assam boundary</b> state outline</span></div>
+          <div><i class="sw" style="background:#ffff00"></i><span><b>District boundaries</b> all districts</span></div>
+          <div><i class="sw" style="background:#ff3300"></i><span><b>Selected study area</b> highlight, width 3</span></div>
+          <div><i class="sw" style="background:linear-gradient(90deg,#101b4d,#3188bd,#f4e6a1,#d34c32)"></i><span><b>VV / VH backscatter</b> median composite</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="chapter" id="method">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">Data and method</span>
+        <h2>From raw radar scenes to a district view</h2>
+        <p class="lede">The full workflow runs in Google Earth Engine. Each step below matches a block of the app's code.</p>
+      </div>
+      <ol class="flow">
+        <li class="slide-u"><b>Boundaries</b><span>Load the Assam state outline and district polygons as Earth Engine assets.</span></li>
+        <li class="slide-u"><b>Filter</b><span>Sentinel-1 GRD, IW mode, scenes carrying both VV and VH, inside Assam, Jun 1 to Nov 1, 2025.</span></li>
+        <li class="slide-u"><b>Composite</b><span>Median of all scenes in the chosen month or full season, for the chosen polarization.</span></li>
+        <li class="slide-u"><b>Clip and display</b><span>Clip to the selected district and stretch with a fixed dB range on a four-colour ramp.</span></li>
+        <li class="slide-u"><b>Time series</b><span>Mean backscatter per acquisition date, reduced at 1 km, drawn as a line chart.</span></li>
+      </ol>
+      <div class="spec slide-u">
+        <table>
+          <tbody>
+            <tr><th scope="row">Study area</th><td>All of Assam · every polygon in Assam_District, name field auto-detected</td></tr>
+            <tr><th scope="row">Collection</th><td>COPERNICUS/S1_GRD</td></tr>
+            <tr><th scope="row">Filters</th><td>instrumentMode = IW · VV and VH present · bounds = Assam</td></tr>
+            <tr><th scope="row">Season window</th><td>2025-06-01 → 2025-11-01</td></tr>
+            <tr><th scope="row">Period options</th><td>Jun · Jul · Aug · Sep · Oct 2025 · Full season (default)</td></tr>
+            <tr><th scope="row">Compositing</th><td>median()</td></tr>
+            <tr><th scope="row">Display range</th><td>VH −28 to −5 dB · VV −20 to 0 dB</td></tr>
+            <tr><th scope="row">Palette</th><td>#101b4d → #3188bd → #f4e6a1 → #d34c32</td></tr>
+            <tr><th scope="row">Chart</th><td>ui.Chart.image.series · mean · scale 1000 m · x = system:time_start</td></tr>
+            <tr><th scope="row">Defaults</th><td>All Assam · VH · HYBRID basemap · zoom 7 (district zoom 9)</td></tr>
+            <tr><th scope="row">Exports</th><td>State and district boundaries → GeoJSON (Drive folder Assam_SAR_Project)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCRIPT WALKTHROUGH -->
+  <section class="chapter" id="script">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">Inside the script</span>
+        <h2>Fourteen blocks, one explorer</h2>
+        <p class="lede">The app is a single Earth Engine JavaScript file organised in numbered blocks. Pick a block to see what it does and the code behind it.</p>
+      </div>
+      <div class="code slide-u">
+        <div class="codenav" role="tablist" id="codenav" aria-label="Script blocks"></div>
+        <div class="codepane">
+          <div class="codehead"><span class="eyebrow" id="codeNum"></span><h3 id="codeTitle"></h3><p id="codeText"></p></div>
+          <pre id="codePre"><code id="codeBody"></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASON CAROUSEL -->
+  <section class="chapter" id="season">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">The season, month by month</span>
+        <h2>Five months of monsoon in radar</h2>
+        <p class="lede">Each slide matches one option in the app's <em>Observation period</em> menu. Read it, then open the same month in the live app and compare.</p>
+      </div>
+      <div class="carousel slide-u" id="carousel" aria-roledescription="carousel">
+        <div class="track" id="track"></div>
+        <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+        <div class="ctrl">
+          <div class="tabs" role="tablist" id="tabs" aria-label="Choose month"></div>
+          <div class="arrows">
+            <button type="button" id="prev" aria-label="Previous month">←</button>
+            <button type="button" id="play" aria-label="Pause autoplay">❚❚</button>
+            <button type="button" id="next" aria-label="Next month">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART LAB -->
+  <section class="chapter" id="chart">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">Chart lab</span>
+        <h2>How each surface should move through the season</h2>
+        <p class="lede">The app draws the real curve for whichever district you pick. This chart shows the typical C-band shapes to compare it against. Switch polarization, and click a series name to hide or show it.</p>
+      </div>
+      <div class="lab">
+        <div class="card slide-l">
+          <div class="toolbar">
+            <strong>Expected monthly backscatter</strong>
+            <div class="seg" role="group" aria-label="Polarization">
+              <button type="button" id="polVH" aria-pressed="true">VH</button>
+              <button type="button" id="polVV" aria-pressed="false">VV</button>
+            </div>
+          </div>
+          <div class="chartbox"><canvas id="profile" aria-label="Line chart of expected backscatter by month for rice, tea, forest and water"></canvas></div>
+          <p class="note">Illustrative profiles drawn from typical Sentinel-1 behaviour reported for rice landscapes. They are not values extracted from this app. Use the app's own temporal chart for measured numbers.</p>
+        </div>
+        <div class="card slide-r">
+          <strong>Backscatter legend, decoded</strong>
+          <div>
+            <div class="ramp" aria-hidden="true"></div>
+            <div class="ticks" id="ticks"></div>
+          </div>
+          <div class="bins" id="bins"></div>
+          <p class="binread" id="binread" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERPRETATION -->
+  <section class="chapter" id="interpret">
+    <div class="wrap">
+      <div class="head slide-u">
+        <span class="eyebrow">Interpretation</span>
+        <h2>What the colours are telling you</h2>
+        <p class="lede">The map shows radar backscatter, not crop type. These three ideas turn the colours into land-surface meaning.</p>
+      </div>
+      <div class="interp">
+        <article class="slide-u">
+          <span class="tag">Mirror effect · dark blue</span>
+          <h3>Water reflects the signal away</h3>
+          <p>Calm water and freshly flooded paddies act like a mirror and send energy away from the satellite. In July they read as the darkest pixels. A district that darkens sharply from June to July is a strong sign of transplanted rice.</p>
+        </article>
+        <article class="slide-u">
+          <span class="tag">Volume scattering · VH rises</span>
+          <h3>Growing plants brighten VH</h3>
+          <p>As rice tillers and canopy build up, the signal bounces around inside the leaves and stems, and cross-polarized VH climbs by several decibels from transplanting toward heading. That rise is the crop's growth curve.</p>
+        </article>
+        <article class="slide-u">
+          <span class="tag">Stable and bright · sand to red</span>
+          <h3>Trees, tea and towns stay high</h3>
+          <p>Forest and tea canopies scatter strongly all season, so their curves are flat. Buildings reflect double-bounce energy and show as the brightest red. Flat, high curves mean the surface is not a seasonal crop.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO + LIMITS -->
+  <section class="chapter" id="use">
+    <div class="wrap two">
+      <div class="slide-l">
+        <div class="head">
+          <span class="eyebrow">Using the app</span>
+          <h2>Four controls, one question</h2>
+        </div>
+        <ol class="steps">
+          <li><div><b>Study district</b><p>Pick a district, or keep All Assam. The map zooms to it and outlines it.</p></div></li>
+          <li><div><b>Observation period</b><p>Choose a month or the full season to change the median composite.</p></div></li>
+          <li><div><b>Polarization</b><p>VH for vegetation growth, VV for surface and moisture contrast.</p></div></li>
+          <li><div><b>Temporal chart</b><p>Read the date-by-date mean. Look for the July dip and the September rise.</p></div></li>
+        </ol>
+      </div>
+      <div class="slide-r">
+        <div class="head">
+          <span class="eyebrow">Limitations</span>
+          <h2>Read with care</h2>
+        </div>
+        <ul class="limits">
+          <li><b>Explorer, not a classifier.</b> Colours are backscatter levels. No crop labels or accuracy assessment are produced yet.</li>
+          <li><b>No speckle filtering.</b> Median compositing reduces speckle, but single-month views can still look grainy.</li>
+          <li><b>Mixed orbits.</b> Ascending and descending passes are combined, so viewing geometry varies between dates.</li>
+          <li><b>District means at 1 km.</b> The chart averages every land cover in the district, which dampens the rice signal where rice is a small share.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap">
+      <div class="closing slide-u">
+        <img src="tea-garden.jpg" alt="">
+        <span class="eyebrow">Try it yourself</span>
+        <h2>Pick a district and watch its season unfold</h2>
+        <p>The live app runs on Google Earth Engine and works in any browser. Start with a rice-heavy floodplain district in VH and step through June to October.</p>
+        <a class="btn primary" href="https://sodium-terrain-475105-q5.projects.earthengine.app/view/assam-sar-cropwatch" target="_blank" rel="noopener">Launch Assam SAR CropWatch ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Contains modified Copernicus Sentinel data (2025), processed in Google Earth Engine.</span>
+    <span>Assam SAR CropWatch · M.Sc. Environmental Sustainability</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+/* ---------- orbit-to-Assam zoom ---------- */
+(function(){
+  const box=document.getElementById('orbitBox'), cv=document.getElementById('orbit');
+  if(!box||!window.d3||!window.topojson) return;
+  const ctx=cv.getContext('2d');
+  const hudStage=document.getElementById('hudStage'), hudLat=document.getElementById('hudLat'), hudLon=document.getElementById('hudLon'), hudZoom=document.getElementById('hudZoom');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const C=[92.99,26.33];               // Assam centroid (Natural Earth label point)
+  const START=[C[0]-260, 8];           // start well round the globe for a long spin
+  const proj=d3.geoOrthographic().clipAngle(90).precision(.4);
+  const path=d3.geoPath(proj,ctx);
+  const grat=d3.geoGraticule10();
+  let W=0,H=0,R=0,KT=0, land,borders,india,assam,ring=[], photo=new Image(), stars=[], ready=false, raf=null, t0=0, played=false;
+  photo.src='assam-state.jpg';
+
+  function size(){
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    W=box.clientWidth; H=box.clientHeight; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    R=Math.min(W,H)*0.40;
+    if(assam){ const p=d3.geoOrthographic().rotate([-C[0],-C[1]]).clipAngle(90); const m=Math.min(W,H)*0.14; p.fitExtent([[m,m],[W-m,H-m]],assam); KT=p.scale(); }
+    stars=Array.from({length:Math.round(W*H/2600)},()=>[Math.random()*W,Math.random()*H,Math.random()*1.2+.2,Math.random()]);
+  }
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const seg=(t,a,b)=>clamp((t-a)/(b-a));
+  const lerp=(a,b,t)=>a+(b-a)*t;
+
+  function draw(t){            // t in seconds, total ≈ 10.5
+    const pSpin=ease(seg(t,0,3.6)), pZoom=ease(seg(t,3.0,7.0)), pLine=ease(seg(t,6.6,8.0)), pPhoto=ease(seg(t,8.6,10.2));
+    const lon=lerp(START[0],C[0],pSpin), lat=lerp(START[1],C[1],pSpin);
+    const k=R*Math.pow(KT/R,pZoom);
+    proj.rotate([-lon,-lat]).translate([W/2,H/2]).scale(k);
+    ctx.clearRect(0,0,W,H);
+    // space
+    ctx.fillStyle='#050a1f'; ctx.fillRect(0,0,W,H);
+    const starA=1-pZoom;
+    if(starA>0){ for(const s of stars){ ctx.globalAlpha=starA*(.35+.65*Math.abs(Math.sin(t*1.3+s[3]*9))); ctx.fillStyle='#dfe6ff'; ctx.fillRect(s[0],s[1],s[2],s[2]); } ctx.globalAlpha=1; }
+    // atmosphere glow
+    const g=ctx.createRadialGradient(W/2,H/2,k*.92,W/2,H/2,k*1.18);
+    g.addColorStop(0,'rgba(49,136,189,.45)'); g.addColorStop(1,'rgba(49,136,189,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(W/2,H/2,k*1.18,0,7); ctx.fill();
+    // ocean
+    ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle='#0d1a4a'; ctx.fill();
+    ctx.beginPath(); path(grat); ctx.strokeStyle='rgba(124,195,236,.12)'; ctx.lineWidth=.6; ctx.stroke();
+    // land
+    ctx.beginPath(); path(land); ctx.fillStyle='#1f3a3a'; ctx.fill();
+    ctx.beginPath(); path(india); ctx.fillStyle=`rgba(127,191,106,${.25+.25*pZoom})`; ctx.fill();
+    ctx.beginPath(); path(borders); ctx.strokeStyle='rgba(238,240,246,.28)'; ctx.lineWidth=.7; ctx.stroke();
+    ctx.beginPath(); path(india); ctx.strokeStyle=`rgba(244,230,161,${.35+.4*pZoom})`; ctx.lineWidth=1; ctx.stroke();
+    // terminator shading for depth
+    const sh=ctx.createRadialGradient(W/2-k*.35,H/2-k*.35,k*.1,W/2,H/2,k*1.02);
+    sh.addColorStop(0,'rgba(255,255,255,.06)'); sh.addColorStop(1,'rgba(0,0,10,.45)');
+    ctx.globalAlpha=1-pZoom; ctx.fillStyle=sh; ctx.beginPath(); path({type:'Sphere'}); ctx.fill(); ctx.globalAlpha=1;
+    // Sentinel-1 orbit while far out
+    if(pZoom<.6){
+      const a=t*1.9, ox=W/2+Math.cos(a)*k*1.32, oy=H/2+Math.sin(a)*k*.42;
+      ctx.globalAlpha=1-pZoom/.6;
+      ctx.strokeStyle='rgba(244,230,161,.25)'; ctx.setLineDash([3,5]); ctx.beginPath(); ctx.ellipse(W/2,H/2,k*1.32,k*.42,0,0,7); ctx.stroke(); ctx.setLineDash([]);
+      const behind=Math.sin(a)<0 && Math.abs(Math.cos(a))<.76;
+      if(!behind){ ctx.fillStyle='#f4e6a1'; ctx.beginPath(); ctx.arc(ox,oy,3.5,0,7); ctx.fill();
+        ctx.font='500 11px "IBM Plex Mono", monospace'; ctx.fillText('Sentinel-1',ox+8,oy-6); }
+      ctx.globalAlpha=1;
+    }
+    // Assam fill + progressive outline
+    if(pZoom>.25){
+      ctx.beginPath(); path(assam); ctx.fillStyle=`rgba(244,230,161,${.10+.18*pLine})`; ctx.fill();
+    }
+    if(pLine>0){
+      const pts=ring.map(c=>proj(c)).filter(Boolean), n=Math.max(2,Math.floor(pts.length*pLine));
+      ctx.beginPath(); pts.slice(0,n).forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+      ctx.strokeStyle='#ffffff'; ctx.lineWidth=2.4; ctx.shadowColor='rgba(244,230,161,.8)'; ctx.shadowBlur=10; ctx.stroke(); ctx.shadowBlur=0;
+    }
+    // radar ping on Assam
+    const c=proj(C);
+    if(c && pZoom>.1 && pZoom<1){
+      for(let i=0;i<3;i++){ const ph=((t*.8+i/3)%1); ctx.strokeStyle=`rgba(244,230,161,${(1-ph)*.7})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(c[0],c[1],6+ph*60,0,7); ctx.stroke(); }
+    }
+    // labels
+    ctx.textAlign='center';
+    if(pLine>.2 && c){ ctx.globalAlpha=clamp((pLine-.2)/.5)*(1-pPhoto);
+      ctx.font=`italic 700 ${Math.round(Math.min(W,H)*.075)}px "Bodoni Moda", Georgia, serif`; ctx.fillStyle='#f4e6a1'; ctx.fillText('Assam',c[0],c[1]+Math.min(W,H)*.03);
+      ctx.font='500 12px "IBM Plex Mono", monospace'; ctx.fillStyle='#eef0f6'; ctx.fillText('≈ 78,400 km² · Brahmaputra & Barak valleys',c[0],c[1]+Math.min(W,H)*.03+22);
+      ctx.globalAlpha=1; }
+    ctx.textAlign='left';
+    // final: crossfade into the GEE screenshot
+    if(pPhoto>0 && photo.complete && photo.naturalWidth){
+      const s=Math.max(W/photo.naturalWidth,H/photo.naturalHeight)*(1.08-.08*pPhoto);
+      const iw=photo.naturalWidth*s, ih=photo.naturalHeight*s;
+      ctx.globalAlpha=pPhoto; ctx.drawImage(photo,(W-iw)/2,(H-ih)/2,iw,ih);
+      ctx.fillStyle='rgba(5,10,31,.55)'; ctx.fillRect(0,H-46,W,46);
+      ctx.fillStyle='#f4e6a1'; ctx.font='500 12px "IBM Plex Mono", monospace'; ctx.textAlign='center';
+      ctx.fillText('Same view in the Assam SAR CropWatch app · HYBRID basemap',W/2,H-19); ctx.textAlign='left'; ctx.globalAlpha=1;
+    }
+    // HUD
+    hudStage.textContent = pPhoto>.5?'Earth Engine view':pLine>0?'Study area · Assam':pZoom>.35?'South Asia · India':'Earth';
+    hudLat.textContent=`${Math.abs(lat).toFixed(2)}° ${lat>=0?'N':'S'}`;
+    const L=((lon+540)%360)-180; hudLon.textContent=`${Math.abs(L).toFixed(2)}° ${L>=0?'E':'W'}`;
+    hudZoom.textContent='×'+(k/R).toFixed(1);
+  }
+  const END=10.6;
+  function loop(now){ const t=(now-t0)/1000; draw(Math.min(t,END)); if(t<END) raf=requestAnimationFrame(loop); else raf=null; }
+  function play(){ if(!ready) return; cancelAnimationFrame(raf); if(reduce){ draw(END); return; } t0=performance.now(); raf=requestAnimationFrame(loop); }
+
+  Promise.all([fetch('countries-50m.json').then(r=>r.json()), fetch('assam.json').then(r=>r.json())]).then(([w,a])=>{
+    land=topojson.feature(w,w.objects.land);
+    borders=topojson.mesh(w,w.objects.countries,(x,y)=>x!==y);
+    india=topojson.feature(w,w.objects.countries).features.find(f=>String(f.id)==='356') || {type:'Sphere'};
+    // d3 expects clockwise exterior rings; flip if the polygon covers the "outside"
+    const fix=f=>{ if(d3.geoArea(f)>2*Math.PI){ const g=f.geometry; (g.type==='Polygon'?[g.coordinates]:g.coordinates).forEach(p=>p.forEach(r=>r.reverse())); } return f; };
+    assam=fix(a); india=india.type==='Feature'?fix(india):india;
+    ring=assam.geometry.type==='Polygon'?assam.geometry.coordinates[0]:assam.geometry.coordinates.reduce((m,p)=>p[0].length>m.length?p[0]:m,[]);
+    ready=true; size(); draw(0);
+    const io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting && !played){ played=true; play(); } }); },{threshold:.45});
+    io.observe(box);
+  }).catch(()=>{ box.querySelector('.hud.tl span').textContent='Map data could not load'; });
+
+  document.getElementById('orbitReplay').addEventListener('click',play);
+  let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(!ready) return; size(); if(!raf) draw(played?END:0); },150); });
+})();
+</script>
+<script>
+(function(){
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const RAMP = ['#101b4d','#3188bd','#f4e6a1','#d34c32'];
+  const months = ['Jun','Jul','Aug','Sep','Oct'];
+
+  /* Illustrative profiles (dB) — typical C-band shapes, not app output */
+  const PROFILES = {
+    VH:{ rice:[-20.5,-24,-19,-15.5,-14.5], tea:[-14,-14,-13.5,-13.5,-14], forest:[-12.5,-12.5,-12,-12,-12.5], water:[-25.5,-26,-26,-25.5,-25.5] },
+    VV:{ rice:[-12.5,-16,-11,-9,-9], tea:[-8,-8,-7.5,-7.5,-8], forest:[-7,-7,-6.5,-6.5,-7], water:[-19,-19.5,-19.5,-19,-19] }
+  };
+  const SERIES = [
+    {k:'rice', label:'Sali rice', color:'#7fbf6a'},
+    {k:'tea', label:'Tea estate', color:'#f4e6a1'},
+    {k:'forest', label:'Forest', color:'#e2694f'},
+    {k:'water', label:'Open water', color:'#3188bd'}
+  ];
+  const RANGE = {VH:[-28,-5], VV:[-20,0]};
+
+  /* ---------- top bar ---------- */
+  const bar = document.getElementById('bar');
+  const onScroll = () => bar.classList.toggle('solid', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* ---------- hero video ---------- */
+  const vid = document.getElementById('heroVid');
+  if (vid) { const p = vid.play && vid.play(); if (p && p.catch) p.catch(()=>{}); }
+
+  /* ---------- season carousel ---------- */
+  const SLIDES = [
+    {m:'June', d:'2025-06-01 → 07-01', stage:'Land preparation', idx:0,
+     p:'Ahu (autumn) rice is coming off the fields and land is being puddled for sali rice. Soils are wet but paddies are not yet uniformly flooded, so rice areas sit in the mid-blue range.',
+     look:[[1,'Wet, bare paddies: mid-blue'],[2,'Tea and forest: sand'],[0,'Rivers and beels: dark navy']]},
+    {m:'July', d:'2025-07-01 → 08-01', stage:'Transplanting and flooding', idx:1,
+     p:'Peak monsoon. Seedlings stand in standing water, so paddies behave like water and drop to the darkest values of the season. This dip is the clearest rice signature in the whole series.',
+     look:[[0,'Flooded paddies: dark navy'],[0,'Flood-affected floodplain: dark navy'],[2,'Tea and forest: unchanged']]},
+    {m:'August', d:'2025-08-01 → 09-01', stage:'Tillering', idx:2,
+     p:'Plants fill out and canopy starts to cover the water. VH recovers quickly from the July low. The contrast between rice and permanent water opens up.',
+     look:[[1,'Tillering rice: blue rising'],[0,'Permanent water: still dark'],[2,'Plantations: steady']]},
+    {m:'September', d:'2025-09-01 → 10-01', stage:'Panicle and heading', idx:3,
+     p:'Biomass is near its peak. VH reaches its seasonal high for rice, approaching the values of tea and shrubs. Fields dry out as the monsoon weakens.',
+     look:[[2,'Heading rice: sand'],[2,'Tea and forest: sand'],[3,'Settlements: red']]},
+    {m:'October', d:'2025-10-01 → 11-01', stage:'Grain filling and ripening', idx:4,
+     p:'Sali rice ripens ahead of the November–December harvest. Backscatter plateaus, and in VV the drying canopy can start to dip slightly.',
+     look:[[2,'Ripening rice: sand'],[1,'Drying fallows: blue'],[3,'Built-up: red']]},
+    {m:'Full season', d:'2025-06-01 → 11-01', stage:'Default view in the app', idx:-1,
+     p:'The median of all five months. It smooths out the July dip, so rice tends to look moderately low, while permanent features stand out clearly. Good for orientation, weaker for crop dynamics.',
+     look:[[0,'Rivers and wetlands'],[1,'Rice-dominated plains'],[2,'Tea, forest, hills']]}
+  ];
+  const track = document.getElementById('track'), tabs = document.getElementById('tabs'), prog = document.getElementById('prog');
+  SLIDES.forEach((s,i)=>{
+    const el = document.createElement('div');
+    el.className='slide'; el.setAttribute('role','group'); el.setAttribute('aria-roledescription','slide');
+    el.setAttribute('aria-label', s.m); el.id='slide-'+i;
+    el.innerHTML = `<div class="body"><div><div class="m">${s.m}</div><div class="dates">${s.d}</div></div>
+      <span class="eyebrow">${s.stage}</span><p>${s.p}</p>
+      <div class="look">${s.look.map(([c,t])=>`<div><i style="background:${RAMP[c]};border:1px solid rgba(255,255,255,.2)"></i><span>${t}</span></div>`).join('')}</div></div>
+      <div class="phase"><canvas width="560" height="300" data-i="${i}"></canvas><small>Illustrative VH curves · highlighted: ${s.idx<0?'whole window':s.m}</small></div>`;
+    track.appendChild(el);
+    const b = document.createElement('button');
+    b.type='button'; b.role='tab'; b.textContent = s.idx<0 ? 'Season' : s.m.slice(0,3);
+    b.setAttribute('aria-controls', el.id); b.addEventListener('click',()=>{go(i); stop();});
+    tabs.appendChild(b);
+  });
+
+  function drawMini(cv, idx){
+    const ctx = cv.getContext('2d'), W=cv.width, H=cv.height, pad={l:44,r:14,t:16,b:30};
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = '#0e1640'; ctx.fillRect(0,0,W,H);
+    const [lo,hi] = RANGE.VH, x=i=>pad.l+i*(W-pad.l-pad.r)/4, y=v=>pad.t+(hi-v)/(hi-lo)*(H-pad.t-pad.b);
+    if(idx>=0){ ctx.fillStyle='rgba(244,230,161,.12)'; const w=(W-pad.l-pad.r)/4; ctx.fillRect(x(idx)-w/2,pad.t,w,H-pad.t-pad.b); }
+    ctx.font='12px "IBM Plex Mono", monospace'; ctx.fillStyle='#a7afcb'; ctx.strokeStyle='rgba(244,230,161,.1)';
+    [-25,-20,-15,-10,-5].forEach(v=>{ctx.beginPath();ctx.moveTo(pad.l,y(v));ctx.lineTo(W-pad.r,y(v));ctx.stroke();ctx.fillText(v,6,y(v)+4);});
+    months.forEach((m,i)=>ctx.fillText(m,x(i)-11,H-9));
+    SERIES.forEach(s=>{
+      const d=PROFILES.VH[s.k]; ctx.strokeStyle=s.color; ctx.lineWidth = s.k==='rice'?3.2:1.8; ctx.globalAlpha = s.k==='rice'?1:.7;
+      ctx.beginPath(); d.forEach((v,i)=>i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v))); ctx.stroke();
+      if(idx>=0){ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(x(idx),y(d[idx]),s.k==='rice'?5:3.5,0,7);ctx.fill();}
+      ctx.globalAlpha=1;
+    });
+    ctx.fillStyle='#7fbf6a'; ctx.font='600 12px Figtree, sans-serif'; ctx.fillText('rice',x(4)-14,y(PROFILES.VH.rice[4])+18);
+  }
+  document.querySelectorAll('.phase canvas').forEach(cv=>drawMini(cv, SLIDES[+cv.dataset.i].idx));
+
+  let cur=0, timer=null, t0=0; const DUR=7000;
+  function go(i){
+    cur=(i+SLIDES.length)%SLIDES.length;
+    track.style.transform=`translateX(-${cur*100}%)`;
+    [...track.children].forEach((el,j)=>{el.classList.toggle('active',j===cur); el.setAttribute('aria-hidden', j!==cur);});
+    [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected', j===cur));
+    t0=performance.now();
+  }
+  const playBtn=document.getElementById('play');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(now){ if(!timer) return; const f=Math.min(1,(now-t0)/DUR); prog.style.width=(f*100)+'%'; if(f>=1) go(cur+1); timer=requestAnimationFrame(tick); }
+  function start(){ if(timer) return; t0=performance.now(); timer=requestAnimationFrame(tick); playBtn.textContent='❚❚'; playBtn.setAttribute('aria-label','Pause autoplay'); }
+  function stop(){ if(timer) cancelAnimationFrame(timer); timer=null; prog.style.width='0'; playBtn.textContent='▶'; playBtn.setAttribute('aria-label','Play autoplay'); }
+  playBtn.addEventListener('click',()=> timer?stop():start());
+  document.getElementById('prev').addEventListener('click',()=>{go(cur-1);stop();});
+  document.getElementById('next').addEventListener('click',()=>{go(cur+1);stop();});
+  let sx=null; track.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  track.addEventListener('touchend',e=>{ if(sx==null) return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40){go(cur+(dx<0?1:-1));stop();} sx=null; });
+  go(0); if(!reduce) start(); else stop();
+
+  /* ---------- chart lab ---------- */
+  let pol='VH', chart=null;
+  function buildChart(){
+    if(!window.Chart) return;
+    const ctx=document.getElementById('profile');
+    Chart.defaults.font.family='Figtree, system-ui, sans-serif';
+    Chart.defaults.color='#a7afcb';
+    chart=new Chart(ctx,{
+      type:'line',
+      data:{labels:months.map(m=>m+' 2025'),datasets:SERIES.map(s=>({label:s.label,data:PROFILES[pol][s.k],borderColor:s.color,backgroundColor:s.color,borderWidth:s.k==='rice'?3:2,pointRadius:4,pointHoverRadius:6,tension:.35}))},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        animation:{duration:reduce?0:900,easing:'easeOutQuart'},
+        interaction:{mode:'index',intersect:false},
+        plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:8,padding:16}},
+          tooltip:{backgroundColor:'#0b1230',borderColor:'rgba(244,230,161,.3)',borderWidth:1,titleFont:{family:'IBM Plex Mono'},callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} dB`}}},
+        scales:{
+          y:{min:RANGE[pol][0],max:RANGE[pol][1],title:{display:true,text:'Mean backscatter (dB)'},grid:{color:'rgba(244,230,161,.08)'},ticks:{font:{family:'IBM Plex Mono'}}},
+          x:{title:{display:true,text:'Acquisition month'},grid:{display:false}}
+        }}
+    });
+  }
+  function setPol(p){
+    pol=p;
+    document.getElementById('polVH').setAttribute('aria-pressed',p==='VH');
+    document.getElementById('polVV').setAttribute('aria-pressed',p==='VV');
+    if(chart){ chart.data.datasets.forEach((d,i)=>d.data=PROFILES[p][SERIES[i].k]); chart.options.scales.y.min=RANGE[p][0]; chart.options.scales.y.max=RANGE[p][1]; chart.update(); }
+    renderBins();
+  }
+  document.getElementById('polVH').addEventListener('click',()=>setPol('VH'));
+  document.getElementById('polVV').addEventListener('click',()=>setPol('VV'));
+
+  const BIN_TEXT = [
+    {n:'Lower backscatter', r:'Open water, flooded paddies in July, smooth wet soil and sandbars. Energy is reflected away from the sensor.'},
+    {n:'Moderately low', r:'Young rice, wet fallow and sparse vegetation. Expect rice districts to move out of this class between July and September.'},
+    {n:'Moderately high', r:'Mature rice near heading, tea estates, shrubland and forest edges. Volume scattering from canopy dominates.'},
+    {n:'Higher backscatter', r:'Dense forest on slopes facing the sensor, villages and towns (double-bounce from walls and ground), and steep terrain.'}
+  ];
+  let activeBin=0;
+  function renderBins(){
+    const [lo,hi]=RANGE[pol], step=(hi-lo)/4, f=v=>(Math.round(v*100)/100).toString().replace('-','−');
+    document.getElementById('ticks').innerHTML=[0,1,2,3,4].map(i=>`<span>${f(lo+i*step)}</span>`).join('');
+    const bins=document.getElementById('bins');
+    bins.innerHTML=BIN_TEXT.map((b,i)=>`<button type="button" data-b="${i}" aria-pressed="${i===activeBin}"><i style="background:${RAMP[i]};border:1px solid rgba(255,255,255,.2)"></i><span>${b.n}</span><code>${f(lo+i*step)} to ${f(lo+(i+1)*step)} dB</code></button>`).join('');
+    bins.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{activeBin=+b.dataset.b;renderBins();}));
+    document.getElementById('binread').textContent = `${pol} · ${BIN_TEXT[activeBin].n}: ${BIN_TEXT[activeBin].r}`;
+  }
+  renderBins();
+  if(window.Chart) buildChart(); else window.addEventListener('load',buildChart);
+
+  /* ---------- GEE map viewer ---------- */
+  const mt=document.getElementById('maptrack'), bS=document.getElementById('mvState'), bD=document.getElementById('mvDist');
+  function mapView(i){ mt.style.transform=`translateX(-${i*100}%)`; bS.setAttribute('aria-pressed',i===0); bD.setAttribute('aria-pressed',i===1);
+    [...mt.children].forEach((f,j)=>f.setAttribute('aria-hidden',j!==i)); }
+  bS.addEventListener('click',()=>mapView(0)); bD.addEventListener('click',()=>mapView(1)); mapView(0);
+  let mx=null; mt.addEventListener('touchstart',e=>mx=e.touches[0].clientX,{passive:true});
+  mt.addEventListener('touchend',e=>{ if(mx==null) return; const dx=e.changedTouches[0].clientX-mx; if(Math.abs(dx)>40) mapView(dx<0?1:0); mx=null; });
+  document.querySelectorAll('.zoom').forEach(z=>z.addEventListener('click',()=>{
+    const lb=document.createElement('div'); lb.className='lightbox'; lb.setAttribute('role','dialog'); lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label',z.dataset.cap);
+    lb.innerHTML=`<button type="button" aria-label="Close">✕</button><img src="${z.dataset.src}" alt="${z.dataset.cap}"><p>${z.dataset.cap}</p>`;
+    const close=()=>{lb.remove(); document.removeEventListener('keydown',esc); z.focus();};
+    const esc=e=>{ if(e.key==='Escape') close(); };
+    lb.addEventListener('click',e=>{ if(e.target===lb||e.target.tagName==='BUTTON') close(); });
+    document.addEventListener('keydown',esc); document.body.appendChild(lb); lb.querySelector('button').focus();
+  }));
+
+  /* ---------- script walkthrough ---------- */
+  const BLOCKS=[
+    {t:'Load your existing assets',d:'Reads the Assam state outline and the district polygons from Earth Engine assets, and prints feature counts and the district attribute fields to the console.',c:
+`var state = ee.FeatureCollection('projects/shruti-ee/assets/Assam');
+var districts = ee.FeatureCollection('projects/shruti-ee/assets/Assam_District');
+var stateGeometry = state.geometry();
+
+print('Assam features:', state.size());
+print('District features:', districts.size());`},
+    {t:'Load Sentinel-1 SAR',d:'Filters the Sentinel-1 GRD archive to Assam, the June to October 2025 season, IW mode, and scenes that carry both VV and VH.',c:
+`var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filterBounds(stateGeometry)
+  .filterDate('2025-06-01', '2025-11-01')
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .select(['VV', 'VH']);`},
+    {t:'Create the user interface',d:'Clears the default layout, builds a HYBRID-basemap map centred on Assam at zoom 7, and a 350 px side panel with the app title.',c:
+`ui.root.clear();
+var map = ui.Map();
+map.setOptions('HYBRID');
+map.centerObject(stateGeometry, 7);
+
+var panel = ui.Panel({style: {width: '350px', padding: '12px'}});
+panel.add(ui.Label({value: 'ASSAM SAR CROP MAPPING',
+  style: {fontSize: '19px', fontWeight: 'bold', color: '#176047'}}));`},
+    {t:'District selector',d:'A dropdown that starts with All Assam. Block 10 fills it with every district name once the asset has loaded.',c:
+`var districtSelect = ui.Select({
+  items: ['All Assam'],
+  value: 'All Assam',
+  style: {stretch: 'horizontal'}
+});
+panel.add(districtSelect);`},
+    {t:'Month selector',d:'Six observation periods: five calendar months and the full season, which is the default. Changing it redraws the map.',c:
+`var periodOptions = {
+  'June 2025': ['2025-06-01', '2025-07-01'],
+  'July 2025': ['2025-07-01', '2025-08-01'],
+  'August 2025': ['2025-08-01', '2025-09-01'],
+  'September 2025': ['2025-09-01', '2025-10-01'],
+  'October 2025': ['2025-10-01', '2025-11-01'],
+  'Full season': ['2025-06-01', '2025-11-01']
+};`},
+    {t:'Polarization selector',d:'Switches the composite and the chart between VV and VH. VH is the default because it responds most to crop growth.',c:
+`var activePolarization = 'VH';
+var polarizationSelect = ui.Select({
+  items: ['VV', 'VH'],
+  value: 'VH',
+  onChange: function(value) {
+    activePolarization = value;
+    updateMap();
+  }
+});`},
+    {t:'Backscatter legend',d:'Four colour boxes from low to high backscatter, with a reminder that the colours are radar values, not crop identities.',c:
+`var legendColors = ['101b4d', '3188bd', 'f4e6a1', 'd34c32'];
+var legendLabels = ['Lower backscatter', 'Moderately low',
+                    'Moderately high', 'Higher backscatter'];
+
+panel.add(ui.Label('Colours show radar backscatter, not crop identities.'));`},
+    {t:'Map scale information',d:'Notes the nominal 10 m Sentinel-1 pixel spacing and adds a status line that reports the current selection.',c:
+`panel.add(ui.Label(
+  'Nominal Sentinel-1 pixel spacing: 10 m. ' +
+  'Use the map scale control; displayed scale changes with zoom.'
+));
+var statusLabel = ui.Label('Loading district information...',
+  {whiteSpace: 'pre'});`},
+    {t:'Temporal chart panel',d:'An empty panel that holds the backscatter time-series chart. It is cleared and refilled on every update.',c:
+`panel.add(ui.Label({value: 'TEMPORAL BACKSCATTER CHART',
+  style: {fontWeight: 'bold', margin: '12px 0 5px 0'}}));
+var chartPanel = ui.Panel({style: {stretch: 'horizontal'}});
+panel.add(chartPanel);`},
+    {t:'Find the district name field',d:'Checks nine common field names (district, DISTRICT, NAME_2 and so on), picks the first match, and loads every distinct district name, sorted, into the dropdown.',c:
+`var candidateNames = ['district', 'District', 'DISTRICT', 'district_name',
+  'DISTRICT_NAME', 'DIST_NAME', 'NAME_2', 'name', 'NAME'];
+
+districts.aggregate_array(districtProperty)
+  .distinct().sort()
+  .evaluate(function(names) {
+    var options = ['All Assam'].concat(names);
+    districtSelect.items().reset(options);
+  });`},
+    {t:'Selected study area',d:'When a district is chosen, its geometry becomes the study area. Choosing All Assam returns to the full state.',c:
+`districtSelect.onChange(function(name) {
+  if (!name || name === 'All Assam') {
+    selectedGeometry = stateGeometry;
+    selectedName = 'All Assam';
+  } else {
+    selectedGeometry = districts
+      .filter(ee.Filter.eq(districtProperty, name)).geometry();
+    selectedName = name;
+  }
+  updateMap();
+});`},
+    {t:'Update map and temporal chart',d:'Draws the three boundary layers, zooms to the selection (7 for Assam, 9 for a district), builds the median composite with a fixed dB stretch and plots the mean backscatter per acquisition at 1 km.',c:
+`var composite = subset.median()
+  .select(activePolarization)
+  .clip(selectedGeometry);
+
+var minValue = activePolarization === 'VV' ? -20 : -28;
+var maxValue = activePolarization === 'VV' ? 0 : -5;
+
+var chart = ui.Chart.image.series({
+  imageCollection: subset.select(activePolarization),
+  region: selectedGeometry,
+  reducer: ee.Reducer.mean(),
+  scale: 1000,
+  xProperty: 'system:time_start'
+});`},
+    {t:'Display the application',d:'Places the control panel and the map side by side in a split panel and runs the first update.',c:
+`ui.root.add(ui.SplitPanel({
+  firstPanel: panel,
+  secondPanel: map,
+  orientation: 'horizontal',
+  wipe: false,
+  style: {stretch: 'both'}
+}));
+updateMap();`},
+    {t:'Export boundaries to Drive',d:'Two optional tasks that export the state and district boundaries as GeoJSON to the Assam_SAR_Project folder.',c:
+`Export.table.toDrive({
+  collection: districts,
+  description: 'Assam_District_Boundaries',
+  folder: 'Assam_SAR_Project',
+  fileNamePrefix: 'Assam_District',
+  fileFormat: 'GeoJSON'
+});`}
+  ];
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const hl=src=>esc(src).replace(/(\/\/.*$)|('(?:[^'\\]|\\.)*')|\b(var|function|if|else|return|for|null|true|false)\b|\b(\d+(?:\.\d+)?)\b|\b(ee|ui|Export|print)\b/gm,
+    (m,c,s,k,n,f)=> c?`<span class="tok-c">${c}</span>`: s?`<span class="tok-s">${s}</span>`: k?`<span class="tok-k">${k}</span>`: n?`<span class="tok-n">${n}</span>`:`<span class="tok-f">${f}</span>`);
+  const nav=document.getElementById('codenav'), pane=document.querySelector('.codepane');
+  BLOCKS.forEach((b,i)=>{
+    const btn=document.createElement('button'); btn.type='button'; btn.setAttribute('role','tab');
+    btn.innerHTML=`<span>${String(i+1).padStart(2,'0')}</span><span>${b.t}</span>`;
+    btn.addEventListener('click',()=>showBlock(i)); nav.appendChild(btn);
+  });
+  function showBlock(i){
+    const b=BLOCKS[i];
+    [...nav.children].forEach((x,j)=>x.setAttribute('aria-selected',j===i));
+    document.getElementById('codeNum').textContent=`Block ${i+1} of ${BLOCKS.length}`;
+    document.getElementById('codeTitle').textContent=b.t;
+    document.getElementById('codeText').textContent=b.d;
+    document.getElementById('codeBody').innerHTML=hl(b.c);
+    pane.classList.remove('swap'); void pane.offsetWidth; pane.classList.add('swap');
+  }
+  showBlock(1);
+})();
+</script>
+
+</body></html>
